@@ -62,8 +62,8 @@ endfor
 disp(['/////  Y   ////']);
 disp(S);
 
-w=n
-z=w
+w=n;
+z=w;
 
 while w >=1
   while z <= n
