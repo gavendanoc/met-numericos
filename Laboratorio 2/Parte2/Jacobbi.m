@@ -41,6 +41,11 @@ if (!has_ded(M, n))
   return;
 endif
 
+if (det(M) == 0)
+  printf("Error: La matriz no es invertible\n");
+  return;
+endif
+
 
 printf("\n\nExcelente trabajo! Eres un maquina en esto. \nSigamos con el ingreso de las igualdades\n\n");
 
