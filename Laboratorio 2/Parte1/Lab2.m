@@ -2,22 +2,56 @@ clc
 clear all
 
 #crear matriz
-n=input('Ingrese tamanho de la matriz ');
+
+ok = false;
+while (~ok)
+  try
+    n=input('Ingrese tamanho de la matriz ');#se crea la funcion
+    ok = true;
+  catch
+    printf("Por favor, ingrese un numero válido.\n\n");
+  end_try_catch
+endwhile
+
+
 for i=1:n
   for j=1:n
     disp(['Ingrese el elemento ', num2str(i),',',num2str(j),' de la matriz. ']);
-    M(i,j) = input('');
+    ok = false;
+    while (~ok)
+      try
+        M(i,j) = input('');
+        ok = true;
+      catch
+        printf("Por favor, ingrese un numero válido.");
+      end_try_catch
+    endwhile
     Co(i,j) = 1;
   endfor
 endfor
+
 disp(M)
+
 for k=1:n
   disp(['Ingrese el elemento ',num2str(k),' del vector solución.']);
-  S(k) = input('');
+  ok = false;
+  while (~ok)
+    try
+      S(k) = input('');
+      ok = true;
+    catch
+      printf("Por favor, ingrese un numero válido.");
+    end_try_catch
+  endwhile
 endfor
 
 disp(['///////']);
 disp(S);
+
+if (det(M) == 0)
+  printf("Error: La matriz no es invertible\n");
+  return;
+endif
 
 for g=1:n-1
   for o=g+1:n
