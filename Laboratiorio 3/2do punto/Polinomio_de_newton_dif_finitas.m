@@ -7,7 +7,7 @@ pkg load symbolic
 ok = false;
 while (~ok)
   try
-    n=input('Ingrese el grado n del polinomio que generará éste programa ');#La variable 'n' representa el grado del polinomio.
+    n=input('Ingrese el grado n del polinomio que generará éste programa: ');#La variable 'n' representa el grado del polinomio.
     ok = true;
   catch
     printf("Por favor, ingrese un numero válido.\n\n");#Esta función try-catch es para que el usuario solo pueda ingresar números, ya que n es una variable numérica. Esta función se ve frecuentemente en este código.
@@ -21,17 +21,44 @@ disp(['Usted ingresó el número ',num2str(n),' por lo que deberá ingresar como mi
 
 ok = false;
 while (~ok) 
+	try 	
 	puntos_size = input("Ingrese la cantidad de datos: ");
 	if puntos_size >= n+1 
 		ok = true;
 	else
-		disp(['Recuerde que usted ingresó el número ',num2str(n),' por lo que deberá ingresar como minimo ',num2str(n+1),' datos.'])#Esto le indica al usuario que debe ingresar n+1 nodos.
+		disp(['Recuerde que usted ingresó el número ',num2str(n),' por lo que deberá ingresar como minimo ',num2str(n+1)," datos.\n\n"])#Esto le indica al usuario que debe ingresar n+1 nodos.
 	endif	
+	catch
+	printf("Por favor, ingrese un numero entero.\n\n");
+	end_try_catch
 endwhile
 
-h = input("Ingrese la distancia constante entre los datos: ");
+ok = false;
+while !ok	
+	try 
+	h = input("Ingrese la distancia constante entre los datos: ");	
+	if h > 0	
+		ok = true;
+	else 
+			printf("Debe ingresar un numero positivo.\n\n");
+	endif
+	catch
+	printf("Por favor, ingrese un numero real.\n\n");
+	end_try_catch
+endwhile
 
-valor_inicial = input("Ingrese el valor inicial: ");
+
+ok = false;
+while !ok	
+	try 
+	valor_inicial = input("Ingrese el valor inicial: ");
+	ok = true;
+	catch
+	printf("Por favor, ingrese un numero real.\n\n");
+	end_try_catch
+endwhile
+
+
 
 #imprimiendo la matriz inicial
 printf("%30s","\nTabla de valores de grados\n");
@@ -53,9 +80,21 @@ endfor
 printf("\n\n");
 %%%%
 
-#Ingresando los valores f(x)
-f_x = input("Ingrese los valores de f(x) correspondientes a cada punto:\n","s");
-f_x = cellfun("str2num",strsplit(f_x," "));
+#Ingresando los valores f(x
+ok = false;
+while !ok
+	try
+		f_x = input("Ingrese los valores de f(x) correspondientes a cada punto:\n","s");
+		f_x = cellfun("str2num",strsplit(f_x," "));
+		if size(f_x)(2) == puntos_size
+			ok = true;
+		else
+			printf("%s",strcat("Debe ingresar: ", num2str(puntos_size), " datos.\n\n"));
+		endif
+	catch
+		printf("Debe ingresar numeros.\n\n");
+	end_try_catch
+endwhile
 
 #imprimiendo la matriz inicial completa
 printf("%30s","\nTabla de valores de grados\n");
@@ -79,6 +118,7 @@ printf("\n\n");
 
 #Matriz de diferencias finitas hacia adelante
 #Se añaden los primeros valores
+printf("Tabla de diferencias finitas hacia adelante \n");
 for i=1 : puntos_size
 	dif_fin(i,1) = i-1;
 	dif_fin(i,2) = valor_inicial+(i-1)*h;;
@@ -108,7 +148,15 @@ endfor
 printf("\n");
 
 #Realizando una aproximacion inicial, puede ser extrapolada
-aprox = input("Ingrese el valor al cual le desea realizar la aproximacion: ");
+ok = false;
+while !ok
+	try	
+		aprox = input("Ingrese el valor al cual le desea realizar la aproximacion: ");
+		ok = true;
+	catch
+		printf("Debe ingresar un numero.\n\n");
+	end_try_catch
+endwhile
 
 #Calculado el valor de s
 s = (aprox - dif_fin(1,2))/h;
@@ -138,15 +186,17 @@ for i=1 : puntos_size-1
  endif
 endfor
 
+#Comprobando si es posible interpolar
 if puede_interpolar==1
 	printf("Es posible interpolar\n");
+	
 	#Se verifica si posible interpolar hasta el grado del usuario	
 	grado_max_interpolar = puntos_size - (pos_interpolar-1) - 1;
 	if  grado_max_interpolar < n 
 			printf("Pero no es posible interpolar con un polinomio de grado %d asi que se interpolara hasta el grado mas grande posible %d \n",n,grado_max_interpolar);
 	endif	
-	#Calculando el nuevo s
 	
+	#Calculando el nuevo s
 	s = (aprox-dif_fin(pos_interpolar,2))/h;
 	
 	#Realizando la interpolacion
@@ -164,7 +214,7 @@ if puede_interpolar==1
 			sum = sum + (s_value*dif_fin(i_inter,i+2))/fact;
 		endif
 	endfor
-	printf("La aproximacion por medio de interpolacion es de %10f \n",sum);
+	printf("La aproximacion por medio de interpolacion es de: %10f \n",sum);
 else
-	printf("No es posible interpolar");
+	printf("No es posible interpolar\n");
 endif
