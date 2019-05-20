@@ -19,6 +19,8 @@ disp(['Usted ingresó el número ',num2str(n),' por lo que deberá ingresar ',num2s
 
 ok2 = false; #Esta variable sirve para que el usuario solo ingrese los n+1 elementos x necesarios para los n+1 nodos, ya que si ingresa otro numero no correspondería al número de nodos que éste quiso ingresar.
 while ~ok2
+   x = [];
+   indice = '';
    xIN = input('Por favor ingrese los elementos x de todos los nodos. ','s');
    expression = '[-0123456789.]+';
    indice= regexp(xIN,expression);
@@ -51,7 +53,9 @@ endwhile
 
 #Aquí abajo se hace básicamente lo mismo para ingresar las coordenadas y de los nodos.
 ok2 = false;
-while ~ok2   
+while ~ok2
+   y = []; 
+   indice2 = '';  
    yIN = input('Por favor ingrese los elementos y de todos los nodos. ','s');
    indice2= regexp(yIN,expression);
    for i=1:length(indice2)
