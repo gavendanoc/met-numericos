@@ -1,13 +1,17 @@
 clc;
 clear all;
 pkg load symbolic
+warning('off','all');
+
+syms x;
+
 #Input de los usuarios
 
 %Grado del polinomio
 ok = false;
 while (~ok)
   try
-    n=input('Ingrese el grado n del polinomio que generará éste programa: ');#La variable 'n' representa el grado del polinomio.
+    n=input('Ingrese el grado n del polinomio que generara este programa: ');#La variable 'n' representa el grado del polinomio.
     ok = true;
   catch
     printf("Por favor, ingrese un numero válido.\n\n");#Esta función try-catch es para que el usuario solo pueda ingresar números, ya que n es una variable numérica. Esta función se ve frecuentemente en este código.
@@ -58,8 +62,6 @@ while !ok
 	end_try_catch
 endwhile
 
-
-
 #imprimiendo la matriz inicial
 printf("%30s","\nTabla de valores de grados\n");
 printf("%10s","puntos");
@@ -67,26 +69,26 @@ for	i=1 : puntos_size
 	printf("%10d ",i-1);
 endfor
 printf("\n");
-printf("%10s","x");
+printf("%10s","");
 for	i=1 : puntos_size
 	valor = valor_inicial+(i-1)*h;
 	printf("%10d ",valor);
 endfor
 printf("\n");
-printf("%10s ","f(x)");
+printf("%10s ","f()");
 for	i=1 : puntos_size
 	printf("%10s ","--");
 endfor
 printf("\n\n");
 %%%%
 
-#Ingresando los valores f(x
+#Ingresando los valores f()
 ok = false;
 while !ok
 	try
-		f_x = input("Ingrese los valores de f(x) correspondientes a cada punto:\n","s");
-		f_x = cellfun("str2num",strsplit(f_x," "));
-		if size(f_x)(2) == puntos_size
+		f_ = input("Ingrese los valores de f() correspondientes a cada punto:\n","s");
+		f_ = cellfun("str2num",strsplit(f_," "));
+		if size(f_)(2) == puntos_size
 			ok = true;
 		else
 			printf("%s",strcat("Debe ingresar: ", num2str(puntos_size), " datos.\n\n"));
@@ -103,15 +105,15 @@ for	i=1 : puntos_size
 	printf("%10d ",i-1);
 endfor
 printf("\n");
-printf("%10s","x");
+printf("%10s","");
 for	i=1 : puntos_size
 	valor = valor_inicial+(i-1)*h;
 	printf("%10d ",valor);
 endfor
 printf("\n");
-printf("%10s ","f(x)");
+printf("%10s ","f()");
 for	i=1 : puntos_size
-	printf("%10d ",f_x(i));
+	printf("%10d ",f_(i));
 endfor
 printf("\n\n");
 %%%
@@ -125,7 +127,7 @@ for i=1 : puntos_size
 endfor
 
 #Se calculan los nuevos valores apartir de los ya conocidos
-dif_fin = [dif_fin f_x'];
+dif_fin = [dif_fin f_'];
 for i=4 : puntos_size+3-1
 	for j=i-3+1: puntos_size
 		dif_fin(j,i) = dif_fin(j,i-1) - dif_fin(j-1,i-1);
@@ -133,9 +135,9 @@ for i=4 : puntos_size+3-1
 endfor
 
 #Se imprime el titulo
-printf("%15s %15s %15s","puntos","xi","f(xi)");
+printf("%15s %15s %15s","puntos","i","f(i)");
 for i=1: puntos_size-1
-	printf("%15s ",strcat("d^", num2str(i), " f(xi)"));
+	printf("%15s ",strcat("d^", num2str(i), " f(i)"));
 endfor
 printf("\n");
 #Se imprime la matriz con todos los valores
@@ -147,11 +149,11 @@ for i=1: size(dif_fin)(1)
 endfor
 printf("\n");
 
-#Realizando una aproximacion inicial, puede ser extrapolada
+#Realizando una aproimacion inicial, puede ser etrapolada
 ok = false;
 while !ok
 	try	
-		aprox = input("Ingrese el valor al cual le desea realizar la aproximacion: ");
+		apro = input("Ingrese el valor al cual le desea realizar la aproimacion: ");
 		ok = true;
 	catch
 		printf("Debe ingresar un numero.\n\n");
@@ -159,10 +161,10 @@ while !ok
 endwhile
 
 #Calculado el valor de s
-s = (aprox - dif_fin(1,2))/h;
+s = (apro - dif_fin(1,2))/h;
 
-printf("Al realizar la aproximacion con el polinomio de grado %d se tiene la aproximacion de:",n);
-#Aproximacion con el polinomio pedido por el usuario
+printf("Al realizar la aproimacion con el polinomio de grado %d se tiene la aproimacion de:",n);
+#Aproimacion con el polinomio pedido por el usuario
 sum = 0;
 fact = 1;
 s_value = 1;
@@ -180,7 +182,7 @@ printf("%10f \n",sum);
 #Viendo si se puede interpolar
 puede_interpolar = 0;
 for i=1 : puntos_size-1
-	if dif_fin(i,2)<=aprox && aprox<=dif_fin(i+1,2)
+	if dif_fin(i,2)<=apro && apro<=dif_fin(i+1,2)
 		pos_interpolar = i;
 		puede_interpolar = 1;
  endif
@@ -191,13 +193,14 @@ if puede_interpolar==1
 	printf("Es posible interpolar\n");
 	
 	#Se verifica si posible interpolar hasta el grado del usuario	
-	grado_max_interpolar = puntos_size - (pos_interpolar-1) - 1;
-	if  grado_max_interpolar < n 
-			printf("Pero no es posible interpolar con un polinomio de grado %d asi que se interpolara hasta el grado mas grande posible %d \n",n,grado_max_interpolar);
+	grado_ma_interpolar = puntos_size - (pos_interpolar-1) - 1;
+	if  grado_ma_interpolar < n 
+			printf("Pero no es posible interpolar con un polinomio de grado %d asi que se interpolara hasta el grado mas grande posible %d \n",n,grado_ma_interpolar);
 	endif	
 	
+  
 	#Calculando el nuevo s
-	s = (aprox-dif_fin(pos_interpolar,2))/h;
+	s = (apro-dif_fin(pos_interpolar,2))/h;
 	
 	#Realizando la interpolacion
 	sum = 0;
@@ -214,7 +217,29 @@ if puede_interpolar==1
 			sum = sum + (s_value*dif_fin(i_inter,i+2))/fact;
 		endif
 	endfor
-	printf("La aproximacion por medio de interpolacion es de: %10f \n",sum);
+	printf("La aproimacion por medio de interpolacion es de: %10f \n",sum);
+  
+  
+  k(x) = (x-dif_fin(pos_interpolar,2))/h;
+  
+  sumk(x) = 0*x;
+	fact = 1;
+	s_value = 1;
+  
+  for i = 1 : n+1
+		#Ajustando a la interpolacion
+		i_inter = i + pos_interpolar-1;
+		if i==1 
+			sumk(x) = sumk(x) + dif_fin(i_inter,i+2);
+		else
+			s_value = s_value * (k(x)-(i-2));
+			fact = fact * (i-1);	
+			sumk(x) = sumk(x) + (s_value*dif_fin(i_inter,i+2))/fact;
+		endif
+	endfor
+  
+  printf("El polinomio interpolado es: \n");
+  sumk
 else
 	printf("No es posible interpolar\n");
 endif
