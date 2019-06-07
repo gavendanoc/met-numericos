@@ -2,7 +2,7 @@ clear;
 % read the input into a string variable
 printf("Muy buenos dias.Me presento, soy un asistente para \nresolver esas horrendas ecuaciones lineales de hasta\n5, 7 o 10 variables que nadie las acaba en la vida.\nUsando el metodo de Jaccobi :)\n\n\n");
 
-
+# ingresar n
 ok = false;
 while (~ok)
   try
@@ -15,6 +15,7 @@ endwhile
 
 printf("\n\nBuen trabajo! sigamos con el ingreso de las componentes de la matriz\n\n");
 
+# Ingresar matriz 
 M=[];
 for i=1: n
   ok = false;
@@ -36,11 +37,14 @@ for i=1: n
   M = [M;s]
 endfor
 
+# detectar si es una matriz con diagonal estrictamente superior
 if (!has_ded(M, n))
   printf("Error: No se puede porque la matriz no tiene una diagonal estrictamente dominante\n");
   return;
 endif
 
+
+# detectar si la matriz es invertible
 if (det(M) == 0)
   printf("Error: La matriz no es invertible\n");
   return;
