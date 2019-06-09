@@ -9,11 +9,7 @@ printf("Favor insertar valores de la forma : [[x1 y1] ; [x2 y2] ; ... ; [Xn Yn]]
 
 
 M = [[-1 10] ; [0 9] ; [1 7] ; [2 5] ; [3 4] ; [4 3] ; [5 0] ; [6, -1]];
-X = M( : , X_pos);
-Y = M( : , Y_pos);
-number_points = size(M)(1); 
 
-#{
 # lectura de puntos
 ok = false;
 while (~ok)
@@ -34,25 +30,27 @@ while (~ok)
   ok = yes_or_no("Estos datos son correctos? ");
   if (ok == false)
      printf("Por favor insertar de nuevo los valores de la forma : [[x1 y1] ; [x2 y2] ; ... ; [Xn Yn]] \n\n"); 
+     continue;
   endif
+  
+  sum_X = sum(X);
+  sum_Y = sum(Y);
+
+  X_pow_2 = X .^ 2;
+  X_times_Y = X .* Y; 
+  sum_X_pow_2 = sum(X_pow_2);
+  sum_X_times_Y = sum(X_times_Y);
+
+  # sistema de ecuaciones
+  solution_vector = [ sum_X_times_Y ; sum_Y];
+  values_matrix = [[sum_X_pow_2 sum_X] ; [sum_X number_points]];
+  
+  if (det(values_matrix) == 0)
+    printf("Error. No se puede construir una recta de regresion usando la matris suministrada. Favor ingresar mayor cantidad de datos\n");
+    ok = false;
+  endif
+  
 endwhile
-#}
-
-sum_X = sum(X);
-sum_Y = sum(Y);
-
-X_pow_2 = X .^ 2;
-X_times_Y = X .* Y; 
-sum_X_pow_2 = sum(X_pow_2);
-sum_X_times_Y = sum(X_times_Y);
-
-# sistema de ecuaciones
-solution_vector = [ sum_X_times_Y ; sum_Y];
-values_matrix = [[sum_X_pow_2 sum_X] ; [sum_X number_points]];
-
-if (det(values_matrix) == 0)
-  printf("Errorr");
-endif
 
 parameters = values_matrix^(-1) * solution_vector;
 A = parameters(1);
@@ -79,5 +77,10 @@ printf("B = %f\n", B);
 printf("\nEcuacion de la recta : Y = %f X + %f\n", A, B);
 
 
+Y2 = A .* X .+ B;
+plot (X, Y, 'o;datos;',  X, Y2 , ';aproximacion lineal;');
+xlabel('eje X');
+ylabel('eje Y');
+grid on;
 
 

@@ -6,9 +6,9 @@ function M = getMatrix ()
       rows = size(M)(1);
       columns = size(M)(2);
       if (columns != 2) 
-        printf("Error, se ingresaron vectores de tamaño %d, favor ingresar unicamente tuplas (x, y)\n" , columns);
+        printf("Error, dimension incorrecta de tamaño %d, favor ingresar unicamente tuplas (x, y)\n" , columns);
       elseif (rows <= 1)
-       printf("Error, no se puede hacer una regresion lineal con un punto.\n");
+       printf("Error, no se puede hacer una aproximacion lineal con un punto.\n");
       else 
         ok = true;
       endif 
