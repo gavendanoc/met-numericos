@@ -7,9 +7,6 @@ Y_pos = 2;
 printf("Recta de regresion y = Ax + B usando minimos cuadrados.\n\n");
 printf("Favor insertar valores de la forma : [[x1 y1] ; [x2 y2] ; ... ; [Xn Yn]]\n\n");
 
-
-M = [[-1 10] ; [0 9] ; [1 7] ; [2 5] ; [3 4] ; [4 3] ; [5 0] ; [6, -1]];
-
 # lectura de puntos
 ok = false;
 while (~ok)
@@ -46,7 +43,7 @@ while (~ok)
   values_matrix = [[sum_X_pow_2 sum_X] ; [sum_X number_points]];
   
   if (det(values_matrix) == 0)
-    printf("Error. No se puede construir una recta de regresion usando la matris suministrada. Favor ingresar mayor cantidad de datos\n");
+    printf("Error. No se puede construir una recta de regresion usando la matris suministrada. \nFavor ingresar mayor cantidad de datos\n");
     ok = false;
   endif
   
