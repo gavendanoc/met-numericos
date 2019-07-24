@@ -4,8 +4,13 @@
 clear;
 clc;
 re=300000;      % Número de Reynolds
+<<<<<<< HEAD
 e=0.002;        % Rugosidad Absoluta
 d=0.5;          % Diámetro interno
+=======
+e=0.0024;        % Rugosidad Absoluta
+d=0.1;          % Diámetro interno
+>>>>>>> c640a632bf0ea11fdc579f46f0812f29b396595c
 
 % variables de la ecuacion HW
 L = 50;
@@ -26,9 +31,7 @@ while abs(f)>0.00001
     % Calculamos el valor de C
     c=(a+b)./2;   
     % Evaluamos en C
-    fa=1/sqrt(c);
-    fb=-2*(log((e/d)/3.71+2.51/(re*sqrt(c))))*0.434294481903252000;
-    f=fb-fa;
+    f = colebrook(e , d, re, c);
     if f>0
         b=c;
     else
@@ -43,6 +46,7 @@ end
 fprintf('Factor de Pérdida de carga =%8.9f \n', c)
 fprintf('Velocidad del agua por el tubo =%8.9f \n', (2* hf*d*g/(c*L))^0.5 )
 
+<<<<<<< HEAD
 Vv = (2* hf*d*g./(Vf*L)).^0.5;
 
 plot(Vf,Vv, 'o');
@@ -54,6 +58,10 @@ ylabel('Velocidad');
 
 
 
+=======
+Xf = [-2:0.02:2];
+plot(Xf, colebrook(e , d, re, Xf) )
+>>>>>>> c640a632bf0ea11fdc579f46f0812f29b396595c
 
 
 
