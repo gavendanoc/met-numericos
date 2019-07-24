@@ -1,2 +1,2 @@
 # met-numericos
-Respositorio para subir los laboratorios en grupo de metodos numericos universidad nacional
+Respositorio con mucho SWAG para subir los laboratorios en grupo de metodos numericos universidad nacional de somalia
