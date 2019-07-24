@@ -4,13 +4,13 @@
 clear;
 clc;
 re=300000;      % Número de Reynolds
-e=0.002;        % Rugosidad Absoluta
+e=0.0024;        % Rugosidad Absoluta
 d=0.1;          % Diámetro interno
 
 % variables de la ecuacion HW
 L = 50;
 g = 9.8;
-hf = 100;
+hf = 600;
 
 
 % proponemos valores de a y b
@@ -47,4 +47,9 @@ fprintf('Velocidad del agua por el tubo =%8.9f \n', (2* hf*d*g/(c*L))^0.5 )
 
 
 
+
+
+
+
+ 
 
