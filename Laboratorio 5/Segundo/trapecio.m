@@ -1,5 +1,5 @@
 clear;
-
+clc;
 
 # ingresar intervalo
 ok = false;
@@ -21,8 +21,8 @@ while (~ok)
 endwhile  
 
 
-# ingresar M
-ok = false;
+# ingresar Ma
+ok=false;
 while (~ok)
   try
     M = input("Ingrese el numero de subintervalos M: ");

@@ -3,6 +3,19 @@ clear all #Limpia todas las variables antes de entrar al programa.
 
 #Se le pide al usuario que ingrese el valor x del nodo x.
 ok = false;
+
+ok = false;
+while (~ok)
+  try
+    fun = input("Ingrese la funcion f(x)= ","s");
+    f = inline(fun,'x');#crea la funcion
+    ok = true;
+  catch
+    printf("Favor ingresar una funcion apropiada \n");
+  end_try_catch
+endwhile
+
+ok = false;
 while (~ok)
   try
     t0=input('Ingrese el valor X del primer nodo. ');#La variable 't0' representa el valor de la coordenada x del primer nodo.
@@ -19,13 +32,14 @@ while (~ok)
     printf("1. Fórmula de diferencias progresivas. \n2. Fórmula de diferencias regresivas \n3. Fórmula de diferencias centradas \n");
     fd=input('Ingrese la fórmula de derivación que desea usar. ');#La variable 'fd' representa el valor de la formula que usará el programa.
     ok = true;
+    if fd ~= 1 && fd ~= 2 && fd ~= 3
+      ok = false;
+      printf("Recuerde que debe ingresar un número entre 1 y 3.\n");
+    endif
   catch
     printf("Por favor, ingrese un numero válido.\n\n");#Esta función try-catch es para que el usuario solo pueda ingresar números, ya que n es una variable numérica. Esta función se ve frecuentemente en este código.
   end_try_catch
-  if fd ~= 1 && fd ~= 2 && fd ~= 3
-    ok = false;
-    printf("Recuerde que debe ingresar un número entre 1 y 3.\n");
-  endif
+  
 endwhile
 
 xF=t0-4:4/25:t0+4;
@@ -34,30 +48,27 @@ xF=t0-4:4/25:t0+4;
 switch fd
   case 1
     for i = 1:5
-      f(i) = 0;
       for j = 1:5 # Con estos ciclos se asignan los valores a las coordenadas 'x' y 'y' de los nodos, para así calcular los coeficientes
         x(i,j) = t0 + (j-1) * 10^(1-i);
-        y(i,j) = cos(x(i,j));
+        y(i,j) = f(x(i,j));
       endfor
     endfor
   case 2
     for i = 1:5
-      f(i) = 0;
       for j = 1:5 #Lo mismo sucede con los otros casos de este switch
         x(i,j) = t0 - (j-1) * 10^(1-i);
-        y(i,j) = cos(x(i,j));
+        y(i,j) = f(x(i,j));
       endfor
     endfor
   case 3
-    for i = 1:5
-      f(i) = 0;
+    for i = 1:5co
       for j = 1:5
         if mod(j,2) == 1
           x(i,j) = t0 + ((1-j)/2) * 10^(1-i);
-          y(i,j) = cos(x(i,j))#Las coordenadas y se igualan al coseno de las x
+          y(i,j) = f(x(i,j));#Las coordenadas y se igualan al coseno de las x
         else
           x(i,j) = t0 + (j/2) * 10^(1-i);
-          y(i,j) = cos(x(i,j));
+          y(i,j) = f(x(i,j));
         endif
       endfor
     endfor  
@@ -85,9 +96,15 @@ E3nodos = fprima_3_nodos + sin(0.8);
 
 E5nodos = fprima_5_nodos + sin(0.8);
                 
-printf("   Incremento  Fp 3 nodos   Fp 5 nodos   Error 3       Error 5 ");
+printf("   Incremento  Fp 3 nodos   Fp 5 nodos   Error 3       Error 5\n")
                 
-table = [Incremento fprima_3_nodos fprima_5_nodos E3nodos E5nodos]
+table = [Incremento fprima_3_nodos fprima_5_nodos E3nodos E5nodos];
+disp(table);
+
+#for o = 1 : size(Incremento)(1)
+#  printf("%.2f\t%f\t%f\t%f\t%f\t\n", table(o)(1), table(o)(2), table(o)(3),table(o)(4), table(o)(5));
+#endfor
+
 
 xF = (t0-5):1/50:(t0+5);
 f3 = a(5,1)+a(5,2)*(xF-x(5,2));
@@ -95,5 +112,5 @@ f5 = a(5,1)+a(5,2)*(xF-x(5,2))+a(5,3)*(xF-x(5,2)).*(xF-x(5,3))+a(5,4)*(xF-x(5,2)
 
 #Instrucción para graficar la función.
 plot(xF,f3,xF,f5,xF,-1*sin(xF)); title('Gráfica polinomio interpolador de newton.');
-
-
+xlabel('x');
+ylabel('y');
