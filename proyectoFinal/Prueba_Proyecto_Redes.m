@@ -30,7 +30,7 @@ while abs(f)>0.00001
         b=c;
     else
         a=c;
-    end
+    end   
 end
 
 
