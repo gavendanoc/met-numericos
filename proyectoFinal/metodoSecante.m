@@ -34,5 +34,3 @@ p1
 
 fprintf('Factor de Pérdida de carga =%8.9f \n', p1)
 fprintf('Velocidad del agua por el tubo =%8.9f \n', (2* hf*d*g/(p1*L))^0.5 )
-
-
