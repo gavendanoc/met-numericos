@@ -16,18 +16,27 @@ hf = 600;
 
 
 % proponemos valores de a y b
-p0 = 1;
-p1 = 0.5;
+p0 = 9;
+p1 = 10;
 
 % Proponemos un valor de f inicial para que entre al ciclo
-n = 7;
+n = 10;
+
 
 while n-- > 0
     % Calculamos el valor de C
     % Evaluamos en C
-    pTemp = p1 - ( colebrook (e , d, re, p1) * (p1 - p0)) /  (colebrook (e , d, re, p1) - colebrook (e , d, re, p0));
+    pTemp = p1 - ( colebrook (e , d, re, p1) * (p1 - p0)) /  ( colebrook (e , d, re, p1) - colebrook (e , d, re, p0) )
     p0 = p1;
     p1 = pTemp;
+    
+    
+    if p0 < 0
+      p0 = 0;  
+    endif
+    if p1 < 0
+      p1 = 0;
+    endif
 end
 
 p1

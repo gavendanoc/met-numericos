@@ -5,7 +5,7 @@ clear;
 clc;
 re=300000;      % Número de Reynolds
 e=0.0024;        % Rugosidad Absoluta
-d=0.1;          % Diámetro interno
+d=0.5;          % Diámetro interno
 
 % variables de la ecuacion HW
 L = 50;
@@ -36,8 +36,6 @@ end
 fprintf('Factor de Pérdida de carga =%8.9f \n', c)
 fprintf('Velocidad del agua por el tubo =%8.9f \n', (2* hf*d*g/(c*L))^0.5 )
 
-Xf = [-2:0.02:2];
-plot(Xf, colebrook(e , d, re, Xf) )
 
 
 
