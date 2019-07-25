@@ -8,7 +8,7 @@ clc;
 ok = false;
 while (~ok)
   try
-    re = input("Ingrese el numero de Reynolds ");
+    re = input("Ingrese el numero de Reynolds Re : ");
     ok = true;
   catch
     printf("Favor ingresar una funcion apropiada \n");
@@ -19,7 +19,7 @@ endwhile
 ok = false;
 while (~ok)
   try
-    e = input("Ingrese la rugosidad absoluta ");
+    e = input("Ingrese la rugosidad absoluta e(mm) : ");
     ok = true;
   catch
     printf("Favor un valor apropiado \n");
@@ -30,7 +30,7 @@ endwhile
 ok = false;
 while (~ok)
   try
-    d = input("Ingrese el diametro interno en metros ");
+    d = input("Ingrese el diametro interno de la tuberia (m) : ");
     ok = true;
   catch
     printf("Favor un valor apropiado \n");
@@ -45,7 +45,7 @@ endwhile
 ok = false;
 while (~ok)
   try
-    L = input("Ingrese la longitud L en metros ");
+    L = input("Ingrese la longitud L (m) : ");
     ok = true;
   catch
     printf("Favor un valor apropiado \n");
@@ -60,7 +60,7 @@ printf("La graverdad es de: %d m/s^2 \n",g);
 ok = false;
 while (~ok)
   try
-    hf = input("Ingrese la perdida de calor en joules ");
+    hf = input("Ingrese la perdida de calor (J) : ");
     ok = true;
   catch
     printf("Favor un valor apropiado \n");
@@ -77,11 +77,12 @@ while (~ok)
     if (columns != 2)
       printf("Error, dimension incorrecta de tamaño %d, favor ingresar unicamente valores [a b]\n" , columns);
     elseif (rows != 1)
-     printf("Error, se necesita un solo intervalo [a b], favor no agregar mas.\n");
+      printf("Error, se necesita un solo intervalo [a b], favor no agregar mas.\n");
+    elseif (colebrook(e , d, re, interval(1)) * colebrook(e , d, re, interval(2)) > 0)
+      printf("La funcion evaluada en a y b debe tener signos distintos\n");
     else
       ok = true;
     endif
-#------ verificar que el signo de f(a) es diferente del signo de f(b)--------
   catch
     printf("Por favor, inqrese un intervalor valido de la forma [a b]\n\n");
   end_try_catch
@@ -90,6 +91,8 @@ endwhile
 % Se asignan los valores de: a y b
 a = interval(1);
 b = interval(2);
+
+
 
 % Proponemos un valor de f inicial para que entre al ciclo
 f=1;
@@ -109,18 +112,50 @@ while abs(f)>0.00001
 end
 
 #Impresiones
-fprintf('Factor de Pérdida de carga =%8.9f \n', c)
-fprintf('Velocidad del agua por el tubo =%8.9f \n', (2* hf*d*g/(c*L))^0.5 )
+fprintf('\n\n----------- Resultados ---------------\n\n');
+fprintf('Intervalo Final [a, b]: [%f, %f] \n', a , b);
+fprintf('Factor de Pérdida de carga f = %8.9f +- %.10f\n', c, abs(a - b));
+fprintf('Velocidad del agua por el tubo = %8.9f +- %.10f  m/s \n', V(hf, d, g, c, L), abs( V(hf, d, g, a, L) - V(hf, d, g, b, L)) );
 
 #Graficas
 
 #Grafica 1
-Xf = [-2:0.02:2];
-plot(Xf, colebrook(e , d, re, Xf))
+figure (1);
+plot(Vf, colebrook(e , d, re, Vf), '*;punto (f, C(f));', "markersize", 10, [0 5],[0 0], 'k');
+axis([0, 1]);
+grid('on');
+xlabel('f');
+ylabel('Funcion Colebrook');
+title('Gráfica del comportamiento de la funcion  Colebrook');
+box("off");
+legend_f1 = legend("location", "northeast");
+set(gca,'fontsize',20);
+set(legend_f1, "fontsize", 20);
 
-#Grafica 2
-Vv = (2* hf*d*g./(Vf*L)).^0.5;
-plot(Vf,Vv, 'o');
-xlabel('F');
-ylabel('Velocidad');
+#Grafica 2 --- Gráfica velocidad en función de f
+figure (2);
+plot(Vf, V (hf, d, g, Vf, L) , 'o;(f, Vf(f));', "markersize", 8, "markerfacecolor", "auto");
+grid('on');
+xlabel('valor de f');
+ylabel('Velocidad (m/s)');
 title('Gráfica velocidad en función de f');
+box("off");
+legend_f2 = legend("location", "northeast");
+set(gca,'fontsize',20);
+set(legend_f2, "fontsize", 20);
+
+#Grafica 3 ---- Gráfica velocidad en función de f ampliada
+figure (3);
+plot(Vf, V(hf, d, g, Vf, L), 'or;(f, Vf(f));', "markersize", 13, "markerfacecolor", "auto");
+grid('on');
+axis ([0.048, 0.06, 8, 9], "square");
+%axis ([0.0295, 0.0306, 24.5, 26], "square");
+xlabel('valor de f');
+ylabel('Velocidad (m/s)');
+title('Gráfica velocidad en función de f ampliada');
+box("off");
+legend_f3 = legend("location", "northeast");
+set(gca,'fontsize',20); 
+set(legend_f3, "fontsize", 20);
+
+

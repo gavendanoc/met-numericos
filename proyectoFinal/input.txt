@@ -1,0 +1,17 @@
+
+--- Valores para primer experimento
+300000
+0.0024
+0.5
+50
+100
+[0 10]
+
+
+--- Valores con el diametro apropiado
+300000
+0.0024
+0.1
+50
+100
+[0 10]
